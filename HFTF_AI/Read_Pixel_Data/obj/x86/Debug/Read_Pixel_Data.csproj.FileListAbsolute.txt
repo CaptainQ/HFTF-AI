@@ -1,5 +1,0 @@
-/Users/patrickmccaffrey/Documents/HFTF-AI/HFTF_AI/Read_Pixel_Data/bin/Debug/Read_Pixel_Data.exe
-/Users/patrickmccaffrey/Documents/HFTF-AI/HFTF_AI/Read_Pixel_Data/bin/Debug/Read_Pixel_Data.pdb
-/Users/patrickmccaffrey/Documents/HFTF-AI/HFTF_AI/Read_Pixel_Data/obj/x86/Debug/Read_Pixel_Data.csproj.CoreCompileInputs.cache
-/Users/patrickmccaffrey/Documents/HFTF-AI/HFTF_AI/Read_Pixel_Data/obj/x86/Debug/Read_Pixel_Data.exe
-/Users/patrickmccaffrey/Documents/HFTF-AI/HFTF_AI/Read_Pixel_Data/obj/x86/Debug/Read_Pixel_Data.pdb
