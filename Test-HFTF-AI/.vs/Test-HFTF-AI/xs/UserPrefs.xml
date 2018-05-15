@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{61A1BB8C-5A49-47B7-A544-E5A45E06C731}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test-HFTF-AI/Program.cs">
+    <Files>
+      <File FileName="Test-HFTF-AI/Program.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Test-HFTF-AI PreferredExecutionTarget="MonoDevelop.Default" FirstBuild="True" />
+</Properties>
