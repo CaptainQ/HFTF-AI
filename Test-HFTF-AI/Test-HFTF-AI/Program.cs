@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Test_HFTF_AI
 {
@@ -18,7 +19,7 @@ namespace Test_HFTF_AI
             Bitmap b = new Bitmap(100, 100);
             using (Graphics g = Graphics.FromImage(b))
             {
-                g.CopyFromScreen(x, y, 0, 0, new Size(100, 100), CopyPixelOperator.SourceCopy);
+                g.CopyFromScreen(x, y, 0, 0, new Size(100, 100), CopyPixelOperation.SourceCopy);
             }
             return b;
         }
