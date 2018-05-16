@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HFTF AI v00.01.00", "HFTF AI v00.01.00\HFTF AI v00.01.00.csproj", "{9ACBE764-06B9-4FC2-B9B6-1CFFE7E72E4B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9ACBE764-06B9-4FC2-B9B6-1CFFE7E72E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACBE764-06B9-4FC2-B9B6-1CFFE7E72E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACBE764-06B9-4FC2-B9B6-1CFFE7E72E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACBE764-06B9-4FC2-B9B6-1CFFE7E72E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B1A4E51-B309-4AF8-987B-4258183BBCF4}
+	EndGlobalSection
+EndGlobal
