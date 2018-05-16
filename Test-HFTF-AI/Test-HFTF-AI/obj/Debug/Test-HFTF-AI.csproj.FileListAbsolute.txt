@@ -1,0 +1,7 @@
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\bin\Debug\Test-HFTF-AI.exe.config
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\bin\Debug\Test-HFTF-AI.exe
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\bin\Debug\Test-HFTF-AI.pdb
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\obj\Debug\Test-HFTF-AI.csprojResolveAssemblyReference.cache
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\obj\Debug\Test-HFTF-AI.csproj.CoreCompileInputs.cache
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\obj\Debug\Test-HFTF-AI.exe
+C:\Users\allkn\Documents\HFTF AI\Test-HFTF-AI\Test-HFTF-AI\obj\Debug\Test-HFTF-AI.pdb
