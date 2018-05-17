@@ -13,6 +13,8 @@ namespace HFTF_AI_v00._01._00
         static void Main(string[] args)
         {
             FrameBuffer fB = new FrameBuffer();
+            Console.Write("Press enter to start: ");
+            Console.ReadLine();
             fB.ReadFrame();
             fB.SaveFrame();
         }
@@ -22,8 +24,8 @@ namespace HFTF_AI_v00._01._00
             static int bufferSize = 6; //Controlls how many frames the AI remmebrs
             Bitmap[] buffer = new Bitmap[bufferSize];
             int bufferOffset = 0;
-            int natX = 433; //Game window size
-            int natY = 224;
+            int natX = 700; //Game window size
+            int natY = 448;
             int offX = 0; //Offsets of the game window
             int offY = 0;
 
