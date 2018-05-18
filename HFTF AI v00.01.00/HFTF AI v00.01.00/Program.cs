@@ -37,7 +37,8 @@ namespace HFTF_AI_v00._01._00
             public Bitmap[] buffer = new Bitmap[bufferSize];
             public int bufferOffset = 0;
             public int natX = 700; //Game window size
-            public int natY = 448;
+            public int natY = 448; //single window is 700 x 448
+                                   //176 x 112 is a sustainable frame rate
             int offX = 2; //Offsets of the game window
             int offY = 106;
 
@@ -105,7 +106,7 @@ namespace HFTF_AI_v00._01._00
                         nodeCount++;
                     }
                 }
-                
+
                 for (int i = 0; i < width; i++)
                 {
                     first[i] = new TestNodeFirst(input);
@@ -120,7 +121,7 @@ namespace HFTF_AI_v00._01._00
                 {
                     for (int l = 0; l < deep[i].Length; l++)
                     {
-                        deep[i][l] = new TestNodeDeep(deep[i-1]);
+                        deep[i][l] = new TestNodeDeep(deep[i - 1]);
                     }
                 }
 
@@ -145,6 +146,29 @@ namespace HFTF_AI_v00._01._00
                 }
                 foreach (TestNodeOut node in output)
                     node.GetData();
+            }
+
+            public void ActivateNetPar()
+            {
+                foreach (TestNodeInput node in input)
+                    node.GetData();
+                /*
+                Parallel.For(0, input.Length, i =>
+                {
+                    input[i].GetData();
+                });
+                */
+                Parallel.For(0, first.Length, i =>
+                {
+                    first[i].GetData();
+                });
+                foreach (TestNodeDeep[] node in deep)
+                {
+                    Parallel.For(0, node.Length, i =>
+                    {
+                        node[i].GetData();
+                    });
+                }
             }
         }
 
