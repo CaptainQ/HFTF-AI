@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.Threading;
 
 namespace HFTF_AI_v00._01._00
 {
@@ -22,9 +23,11 @@ namespace HFTF_AI_v00._01._00
             sW.Start();
 
             fB.ReadFrame();
-            tN.ActivateNet();
 
             sW.Stop();
+            tN.ActivateNet();
+
+            
             Console.WriteLine("Full net cycle took {0} miliseconds.", sW.ElapsedMilliseconds);
             fB.SaveFrame();
         }
@@ -55,13 +58,38 @@ namespace HFTF_AI_v00._01._00
             public void ReadFrame()
             {
                 IncBufOffset();
+
+                Thread left = new Thread(this.ReadFrameLeft);
+                Thread right = new Thread(this.ReadFrameRight);
+
+                //left.Start();
+                //right.Start();
+
+                Parallel.Invoke(() =>
+                {
+                    left.Start();
+                },  // close first Action
+
+                () =>
+                {
+                    right.Start();
+                } //close second Action
+                ); //close parallel.invoke
+            }
+
+            public void ReadFrameLeft()
+            {
                 using (Graphics g = Graphics.FromImage(bufferLeft[bufferOffset]))
                 {
-                    g.CopyFromScreen(offX, offY, 0, 0, new Size(natX/2, natY), CopyPixelOperation.SourceCopy);
+                    g.CopyFromScreen(offX, offY, 0, 0, new Size(natX / 2, natY), CopyPixelOperation.SourceCopy);
                 }
+            }
+
+            public void ReadFrameRight()
+            {
                 using (Graphics g = Graphics.FromImage(bufferRight[bufferOffset]))
                 {
-                    g.CopyFromScreen(offX + (natX/2), offY, 0, 0, new Size(natX/2, natY), CopyPixelOperation.SourceCopy);
+                    g.CopyFromScreen(offX + (natX / 2), offY, 0, 0, new Size(natX / 2, natY), CopyPixelOperation.SourceCopy);
                 }
             }
 
