@@ -34,7 +34,8 @@ namespace HFTF_AI_v00._01._00
         public class FrameBuffer
         {
             public const int bufferSize = 6; //Controlls how many frames the AI remmebrs
-            public Bitmap[] buffer = new Bitmap[bufferSize];
+            public Bitmap[] bufferLeft = new Bitmap[bufferSize];
+            public Bitmap[] bufferRight = new Bitmap[bufferSize];
             public int bufferOffset = 0;
             public int natX = 700; //Game window size
             public int natY = 448; //single window is 700 x 448
@@ -46,16 +47,21 @@ namespace HFTF_AI_v00._01._00
             {
                 for (int i = 0; i < bufferSize; i++)
                 {
-                    buffer[i] = new Bitmap(natX, natY);
+                    bufferLeft[i] = new Bitmap(natX/2, natY);
+                    bufferRight[i] = new Bitmap(natX/2, natY);
                 }
             }
 
             public void ReadFrame()
             {
                 IncBufOffset();
-                using (Graphics g = Graphics.FromImage(buffer[bufferOffset]))
+                using (Graphics g = Graphics.FromImage(bufferLeft[bufferOffset]))
                 {
-                    g.CopyFromScreen(offX, offY, 0, 0, new Size(natX, natY), CopyPixelOperation.SourceCopy);
+                    g.CopyFromScreen(offX, offY, 0, 0, new Size(natX/2, natY), CopyPixelOperation.SourceCopy);
+                }
+                using (Graphics g = Graphics.FromImage(bufferRight[bufferOffset]))
+                {
+                    g.CopyFromScreen(offX + (natX/2), offY, 0, 0, new Size(natX/2, natY), CopyPixelOperation.SourceCopy);
                 }
             }
 
@@ -69,7 +75,8 @@ namespace HFTF_AI_v00._01._00
 
             public void SaveFrame()
             {
-                buffer[bufferOffset].Save("BufferExport.png", ImageFormat.Png);
+                bufferLeft[bufferOffset].Save("BufferExportLeft.png", ImageFormat.Png);
+                bufferRight[bufferOffset].Save("BufferExportRight.png", ImageFormat.Png);
                 Console.WriteLine("Buffer index {0} Saved to disk.", bufferOffset);
             }
         }
@@ -192,10 +199,20 @@ namespace HFTF_AI_v00._01._00
 
             public void GetData()
             {
-                r = frameBuffer.buffer[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).R;
-                g = frameBuffer.buffer[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).G;
-                b = frameBuffer.buffer[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).B;
-                bright = frameBuffer.buffer[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).GetBrightness();
+                if (xLoc < frameBuffer.natX/2)
+                {
+                    r = frameBuffer.bufferLeft[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).R;
+                    g = frameBuffer.bufferLeft[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).G;
+                    b = frameBuffer.bufferLeft[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).B;
+                    bright = frameBuffer.bufferLeft[frameBuffer.bufferOffset].GetPixel(xLoc, yLoc).GetBrightness();
+                }
+                else
+                {
+                    r = frameBuffer.bufferRight[frameBuffer.bufferOffset].GetPixel(xLoc - (frameBuffer.natX/2), yLoc).R;
+                    g = frameBuffer.bufferRight[frameBuffer.bufferOffset].GetPixel(xLoc - (frameBuffer.natX / 2), yLoc).G;
+                    b = frameBuffer.bufferRight[frameBuffer.bufferOffset].GetPixel(xLoc - (frameBuffer.natX / 2), yLoc).B;
+                    bright = frameBuffer.bufferRight[frameBuffer.bufferOffset].GetPixel(xLoc - (frameBuffer.natX / 2), yLoc).GetBrightness();
+                }
             }
         }
 
