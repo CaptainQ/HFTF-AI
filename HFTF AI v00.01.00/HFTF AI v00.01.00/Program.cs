@@ -20,14 +20,14 @@ namespace HFTF_AI_v00._01._00
             Stopwatch sW = new Stopwatch();
             Console.Write("Press enter to start: ");
             Console.ReadLine();
+
             sW.Start();
 
             fB.ReadFrame();
+            tN.ActivateNetPar();
 
             sW.Stop();
-            tN.ActivateNet();
 
-            
             Console.WriteLine("Full net cycle took {0} miliseconds.", sW.ElapsedMilliseconds);
             fB.SaveFrame();
         }
@@ -42,7 +42,7 @@ namespace HFTF_AI_v00._01._00
             public int bufferOffset = 0;
             public int natX = 700; //Game window size
             public int natY = 448; //single window is 700 x 448
-                                   //176 x 112 is a sustainable frame rate
+                                   //these need to be even numbers
             int offX = 2; //Offsets of the game window
             int offY = 106;
 
@@ -59,12 +59,13 @@ namespace HFTF_AI_v00._01._00
             {
                 IncBufOffset();
 
-                Thread left = new Thread(this.ReadFrameLeft);
-                Thread right = new Thread(this.ReadFrameRight);
+                //Thread left = new Thread(this.ReadFrameLeft);
+                //Thread right = new Thread(this.ReadFrameRight);
 
                 //left.Start();
                 //right.Start();
 
+                /*
                 Parallel.Invoke(() =>
                 {
                     left.Start();
@@ -75,6 +76,20 @@ namespace HFTF_AI_v00._01._00
                     right.Start();
                 } //close second Action
                 ); //close parallel.invoke
+                */
+
+                
+                try
+                {
+                    Task t1 = Task.Run( () => { this.ReadFrameLeft(); } );
+                    Task t2 = Task.Run( () => { this.ReadFrameRight(); } );
+
+                    Task.WaitAll(t1, t2);
+                }
+                finally
+                {
+                    Console.WriteLine("Both frame read tasks done");
+                }
             }
 
             public void ReadFrameLeft()
@@ -116,6 +131,7 @@ namespace HFTF_AI_v00._01._00
             public TestNodeDeep[][] deep;
             public TestNodeOut[] output;
 
+            public const int subScaler = 4;
             int netWidth;
             int netDepth;
 
@@ -185,25 +201,60 @@ namespace HFTF_AI_v00._01._00
 
             public void ActivateNetPar()
             {
-                foreach (TestNodeInput node in input)
-                    node.GetData();
                 /*
-                Parallel.For(0, input.Length, i =>
+                Thread input1 = new Thread(() => this.ActivateInput(true));
+                Thread input2 = new Thread(() => this.ActivateInput(false));
+
+                //left.Start();
+                //right.Start();
+
+                Parallel.Invoke(() =>
                 {
-                    input[i].GetData();
-                });
+                    input1.Start();
+                },  // close first Action
+
+                () =>
+                {
+                    input2.Start();
+                } //close second Action
+                ); //close parallel.invoke
                 */
-                Parallel.For(0, first.Length, i =>
+
+                
+                try
                 {
-                    first[i].GetData();
-                });
+                    Task t1 = Task.Run(() => { this.ActivateInput(true); });
+                    Task t2 = Task.Run(() => { this.ActivateInput(false); });
+
+                    Task.WaitAll(t1, t2);
+                }
+                finally
+                {
+                    Console.WriteLine("Both input node tasks done");
+                }
+                
+
+                foreach (TestNodeFirst node in first)
+                    node.GetData();
                 foreach (TestNodeDeep[] node in deep)
                 {
-                    Parallel.For(0, node.Length, i =>
+                    for (int i = 0; i < node.Length; i++)
                     {
                         node[i].GetData();
-                    });
+                    }
                 }
+                foreach (TestNodeOut node in output)
+                    node.GetData();
+            }
+
+            public void ActivateInput(bool firstHalf)
+            {
+                int start = 0;
+                if (firstHalf == false)
+                    start = (input.Length / 2);
+                int end = start + (input.Length / 2);
+                for (int l = start; l < end; l = l + subScaler)
+                    input[l].GetData();
             }
         }
 
