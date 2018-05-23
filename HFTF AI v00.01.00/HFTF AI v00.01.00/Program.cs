@@ -79,17 +79,10 @@ namespace HFTF_AI_v00._01._00
                 */
 
                 
-                try
-                {
-                    Task t1 = Task.Run( () => { this.ReadFrameLeft(); } );
-                    Task t2 = Task.Run( () => { this.ReadFrameRight(); } );
+                Task t1 = Task.Run( () => { this.ReadFrameLeft(); } );
+                Task t2 = Task.Run( () => { this.ReadFrameRight(); } );
 
-                    Task.WaitAll(t1, t2);
-                }
-                finally
-                {
-                    Console.WriteLine("Both frame read tasks done");
-                }
+                Task.WaitAll(t1, t2);
             }
 
             public void ReadFrameLeft()
@@ -134,6 +127,8 @@ namespace HFTF_AI_v00._01._00
             public const int subScaler = 4;
             int netWidth;
             int netDepth;
+
+            int deepLayer = 0;
 
             public TestNet(FrameBuffer buffer, int width, int depth, int end)
             {
@@ -221,30 +216,30 @@ namespace HFTF_AI_v00._01._00
                 */
 
                 
-                try
-                {
-                    Task t1 = Task.Run(() => { this.ActivateInput(true); });
-                    Task t2 = Task.Run(() => { this.ActivateInput(false); });
+                Task t1 = Task.Run(() => { this.ActivateInput(true); });
+                Task t2 = Task.Run(() => { this.ActivateInput(false); });
+                Task.WaitAll(t1, t2);
 
-                    Task.WaitAll(t1, t2);
-                }
-                finally
-                {
-                    Console.WriteLine("Both input node tasks done");
-                }
-                
+                t1 = Task.Run(() => { this.ActivateFirst(true); });
+                t2 = Task.Run(() => { this.ActivateFirst(false); });
+                Task.WaitAll(t1, t2);
 
-                foreach (TestNodeFirst node in first)
-                    node.GetData();
+                deepLayer = 0;
                 foreach (TestNodeDeep[] node in deep)
                 {
                     for (int i = 0; i < node.Length; i++)
                     {
-                        node[i].GetData();
+                        t1 = Task.Run(() => { this.ActivateDeep(true); });
+                        t2 = Task.Run(() => { this.ActivateDeep(false); });
+                        Task.WaitAll(t1, t2);
+
+                        deepLayer++;
                     }
                 }
-                foreach (TestNodeOut node in output)
-                    node.GetData();
+
+                t1 = Task.Run(() => { this.ActivateOutput(true); });
+                t2 = Task.Run(() => { this.ActivateOutput(false); });
+                Task.WaitAll(t1, t2);
             }
 
             public void ActivateInput(bool firstHalf)
@@ -255,6 +250,36 @@ namespace HFTF_AI_v00._01._00
                 int end = start + (input.Length / 2);
                 for (int l = start; l < end; l = l + subScaler)
                     input[l].GetData();
+            }
+
+            public void ActivateFirst(bool firstHalf)
+            {
+                int start = 0;
+                if (firstHalf == false)
+                    start = (first.Length / 2);
+                int end = start + (first.Length / 2);
+                for (int l = start; l < end; l++)
+                    first[l].GetData();
+            }
+
+            public void ActivateDeep(bool firstHalf)
+            {
+                int start = 0;
+                if (firstHalf == false)
+                    start = (deep[deepLayer].Length / 2);
+                int end = start + (deep[deepLayer].Length / 2);
+                for (int l = start; l < end; l++)
+                    deep[deepLayer][l].GetData();
+            }
+
+            public void ActivateOutput(bool firstHalf)
+            {
+                int start = 0;
+                if (firstHalf == false)
+                    start = (output.Length / 2);
+                int end = start + (output.Length / 2);
+                for (int l = start; l < end; l++)
+                    output[l].GetData();
             }
         }
 
